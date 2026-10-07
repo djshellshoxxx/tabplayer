@@ -19,9 +19,12 @@ void TabPlayerAudioProcessor::processTyped (juce::AudioBuffer<Sample>& audio, ju
     audio.clear();
 
     double bpm = score.getMeta().tempoBpm;
-    if (auto position = getPlayHead() != nullptr ? getPlayHead()->getPosition() : juce::Optional<juce::AudioPlayHead::PositionInfo>{})
-        if (auto hostBpm = position->getBpm())
-            bpm = *hostBpm;
+    if (auto* playHead = getPlayHead())
+    {
+        if (const auto position = playHead->getPosition())
+            if (const auto hostBpm = position->getBpm())
+                bpm = *hostBpm;
+    }
 
     playback.process (midi, audio.getNumSamples(), currentSampleRate, bpm, speed.load());
 }
