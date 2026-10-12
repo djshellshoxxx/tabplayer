@@ -171,8 +171,11 @@ namespace
 
         // Bass-shaped when a four/five-string set tops out on G (EADG, BEADG);
         // a five-line guitar tab tops out on E or B.
-        const bool bassLike = (n == 4 || n == 5) && highFirst.front().pitchClass == 7;
-        const int topReference = bassLike ? 43 : 64;
+        const bool bassLike = (n == 4 || n == 5 || n == 6)
+                              && (highFirst.front().pitchClass == 7
+                                  || (n >= 5 && highFirst.front().pitchClass == 0));
+        const int topReference = bassLike
+            ? (highFirst.front().pitchClass == 0 ? 48 : 43) : 64;
 
         int previous = -1;
         for (int s = 0; s < n; ++s)
@@ -247,6 +250,17 @@ namespace
             { "7-string",         7, { 64, 59, 55, 50, 45, 40, 35 } },
             { "8 string",         8, { 64, 59, 55, 50, 45, 40, 35, 30 } },
             { "8-string",         8, { 64, 59, 55, 50, 45, 40, 35, 30 } },
+            // Bass tunings are high-string first and use sounding octave.
+            // Keep specific matches ahead of the generic "bass" entry.
+            { "6 string bass",    6, { 48, 43, 38, 33, 28, 23 } },
+            { "6-string bass",    6, { 48, 43, 38, 33, 28, 23 } },
+            { "five string high c bass", 5, { 48, 43, 38, 33, 28 } },
+            { "5 string high c bass", 5, { 48, 43, 38, 33, 28 } },
+            { "5-string high c bass", 5, { 48, 43, 38, 33, 28 } },
+            { "drop d bass",      4, { 43, 38, 33, 26 } },
+            { "bead bass",        4, { 38, 33, 28, 23 } },
+            { "4 string bass",    4, { 43, 38, 33, 28 } },
+            { "4-string bass",    4, { 43, 38, 33, 28 } },
             { "5 string bass",    5, { 43, 38, 33, 28, 23 } },
             { "5-string bass",    5, { 43, 38, 33, 28, 23 } },
             { "bass",             4, { 43, 38, 33, 28 } },
@@ -1378,7 +1392,7 @@ bool AsciiTabReader::read (const juce::String& text, PerformanceScore& destinati
 
         track.capoFret = juce::jlimit (0, 24, header.capo);
         track.numStrings = numStrings;
-        track.name = numStrings <= 5 && track.tuning[0] <= 50 ? "Bass" : "Guitar";
+        track.name = numStrings <= 6 && track.tuning[0] <= 50 ? "Bass" : "Guitar";
         destination.getMeta().tuningName = header.tuningName;
     }
 
