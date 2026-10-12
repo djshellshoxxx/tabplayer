@@ -223,6 +223,17 @@ namespace
     const TabTuning* matchTuning (const juce::String& lower)
     {
         static const TabTuning table[] = {
+            // Bass tunings are high-string first and use sounding octave.
+            // Keep specific matches ahead of the generic "bass" entry.
+            { "6 string bass",    6, { 48, 43, 38, 33, 28, 23 } },
+            { "6-string bass",    6, { 48, 43, 38, 33, 28, 23 } },
+            { "five string high c bass", 5, { 48, 43, 38, 33, 28 } },
+            { "5 string high c bass", 5, { 48, 43, 38, 33, 28 } },
+            { "5-string high c bass", 5, { 48, 43, 38, 33, 28 } },
+            { "drop d bass",      4, { 43, 38, 33, 26 } },
+            { "bead bass",        4, { 38, 33, 28, 23 } },
+            { "4 string bass",    4, { 43, 38, 33, 28 } },
+            { "4-string bass",    4, { 43, 38, 33, 28 } },
             { "drop c#",          6, { 63, 58, 54, 49, 44, 37 } },
             { "drop db",          6, { 63, 58, 54, 49, 44, 37 } },
             { "drop c",           6, { 62, 57, 53, 48, 43, 36 } },
@@ -250,17 +261,6 @@ namespace
             { "7-string",         7, { 64, 59, 55, 50, 45, 40, 35 } },
             { "8 string",         8, { 64, 59, 55, 50, 45, 40, 35, 30 } },
             { "8-string",         8, { 64, 59, 55, 50, 45, 40, 35, 30 } },
-            // Bass tunings are high-string first and use sounding octave.
-            // Keep specific matches ahead of the generic "bass" entry.
-            { "6 string bass",    6, { 48, 43, 38, 33, 28, 23 } },
-            { "6-string bass",    6, { 48, 43, 38, 33, 28, 23 } },
-            { "five string high c bass", 5, { 48, 43, 38, 33, 28 } },
-            { "5 string high c bass", 5, { 48, 43, 38, 33, 28 } },
-            { "5-string high c bass", 5, { 48, 43, 38, 33, 28 } },
-            { "drop d bass",      4, { 43, 38, 33, 26 } },
-            { "bead bass",        4, { 38, 33, 28, 23 } },
-            { "4 string bass",    4, { 43, 38, 33, 28 } },
-            { "4-string bass",    4, { 43, 38, 33, 28 } },
             { "5 string bass",    5, { 43, 38, 33, 28, 23 } },
             { "5-string bass",    5, { 43, 38, 33, 28, 23 } },
             { "bass",             4, { 43, 38, 33, 28 } },
