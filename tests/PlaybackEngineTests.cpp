@@ -56,17 +56,17 @@ int main()
         int bottomMidi;
     };
     const BassCase bassCases[] = {
-        { "Tuning: 4 string bass", "G|--0--|\\nD|-----|\\nA|-----|\\nE|--0--|", 4, 43, 28 },
-        { "Tuning: 5 string bass", "G|--0--|\\nD|-----|\\nA|-----|\\nE|-----|\\nB|--0--|", 5, 43, 23 },
-        { "Tuning: 6 string bass", "C|--0--|\\nG|-----|\\nD|-----|\\nA|-----|\\nE|-----|\\nB|--0--|", 6, 48, 23 },
-        { "Tuning: drop d bass", "G|--0--|\\nD|-----|\\nA|-----|\\nD|--0--|", 4, 43, 26 },
-        { "Tuning: BEAD bass", "D|--0--|\\nA|-----|\\nE|-----|\\nB|--0--|", 4, 38, 23 }
+        { "Tuning: 4 string bass", "G|--0--|\nD|-----|\nA|-----|\nE|--0--|", 4, 43, 28 },
+        { "Tuning: 5 string bass", "G|--0--|\nD|-----|\nA|-----|\nE|-----|\nB|--0--|", 5, 43, 23 },
+        { "Tuning: 6 string bass", "C|--0--|\nG|-----|\nD|-----|\nA|-----|\nE|-----|\nB|--0--|", 6, 48, 23 },
+        { "Tuning: drop d bass", "G|--0--|\nD|-----|\nA|-----|\nD|--0--|", 4, 43, 26 },
+        { "Tuning: BEAD bass", "D|--0--|\nA|-----|\nE|-----|\nB|--0--|", 4, 38, 23 }
     };
     for (const auto& item : bassCases)
     {
         PerformanceScore bass;
         TabImportDiagnostics bassDiagnostics;
-        const juce::String source = juce::String (item.header) + "\\n" + item.staff + "\\n";
+        const juce::String source = juce::String (item.header) + "\n" + item.staff + "\n";
         const bool parsed = importer.read (source, bass, &bassDiagnostics);
         ok &= expect (parsed, "bass dialect imports");
         if (! parsed || bass.getNumTracks() == 0)
