@@ -203,7 +203,9 @@ namespace
 
     bool lineLooksLikeTuningStatement (const juce::String& lower)
     {
-        return lower.contains ("tuning") || lower.contains ("tuned ")\n            || lower.contains ("string bass") || lower.contains ("drop d bass")\n            || lower.contains ("bead bass")
+        return lower.contains ("tuning") || lower.contains ("tuned ")
+            || lower.contains ("string bass") || lower.contains ("drop d bass")
+            || lower.contains ("bead bass")
             || lower.contains ("drop d") || lower.contains ("drop c")
             || lower.contains ("dadgad") || lower.contains ("open g")
             || lower.contains ("half step down") || lower.contains ("half-step down")
