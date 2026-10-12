@@ -129,6 +129,38 @@ namespace
 
     std::vector<int> namedTuning (const juce::String& lower, juce::String& name)
     {
+        // Specific bass declarations must precede generic guitar tuning names.
+        if (lower.contains ("6 string bass") || lower.contains ("6-string bass"))
+        {
+            name = "6-string Bass B E A D G C";
+            return { 48, 43, 38, 33, 28, 23 };
+        }
+        if (lower.contains ("high c bass") || lower.contains ("high-c bass"))
+        {
+            name = "5-string Bass E A D G C";
+            return { 48, 43, 38, 33, 28 };
+        }
+        if (lower.contains ("5 string bass") || lower.contains ("5-string bass"))
+        {
+            name = "5-string Bass B E A D G";
+            return { 43, 38, 33, 28, 23 };
+        }
+        if (lower.contains ("drop d bass"))
+        {
+            name = "Drop D Bass";
+            return { 43, 38, 33, 26 };
+        }
+        if (lower.contains ("bead bass"))
+        {
+            name = "BEAD Bass";
+            return { 38, 33, 28, 23 };
+        }
+        if (lower.contains ("4 string bass") || lower.contains ("4-string bass")
+            || lower.contains ("standard bass") || lower == "tuning: bass")
+        {
+            name = "4-string Bass E A D G";
+            return { 43, 38, 33, 28 };
+        }
         if (lower.contains ("dadgad"))
         {
             name = "DADGAD";
@@ -171,7 +203,7 @@ namespace
 
     bool lineLooksLikeTuningStatement (const juce::String& lower)
     {
-        return lower.contains ("tuning") || lower.contains ("tuned ")
+        return lower.contains ("tuning") || lower.contains ("tuned ")\n            || lower.contains ("string bass") || lower.contains ("drop d bass")\n            || lower.contains ("bead bass")
             || lower.contains ("drop d") || lower.contains ("drop c")
             || lower.contains ("dadgad") || lower.contains ("open g")
             || lower.contains ("half step down") || lower.contains ("half-step down")
