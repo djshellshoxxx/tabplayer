@@ -1,0 +1,32 @@
+name: Windows beta verification
+
+on:
+  push:
+    branches: [main, 'audit/**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-beta:
+    runs-on: windows-2022
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64 -DTABPLAYER_BUILD_TESTS=ON
+      - name: Build
+        run: cmake --build build --config Release --parallel 4
+      - name: Unit tests
+        run: ctest --test-dir build -C Release --output-on-failure
+      - name: Upload beta binaries for inspection
+        uses: actions/upload-artifact@v4
+        with:
+          name: TabPlayer-Windows-x64-beta-candidate
+          path: |
+            build/TabPlayer_artefacts/Release/VST3/**
+            build/TabPlayer_artefacts/Release/Standalone/**
+          if-no-files-found: error
+          retention-days: 14
