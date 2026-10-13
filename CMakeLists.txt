@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(TabPlayer VERSION 0.1.0 LANGUAGES CXX)
+project(TabPlayer VERSION 0.1.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -56,6 +56,7 @@ target_include_directories(TabPlayer PRIVATE
 target_compile_definitions(TabPlayer PUBLIC
     JUCE_WEB_BROWSER=0
     JUCE_USE_CURL=0
+    JUCE_VST3_CAN_REPLACE_VST2=0
 )
 
 target_link_libraries(TabPlayer PRIVATE
@@ -70,6 +71,9 @@ if (TABPLAYER_BUILD_TESTS)
     enable_testing()
     add_executable(TabPlayerTests tests/PlaybackEngineTests.cpp ${TABPLAYER_CORE})
     target_include_directories(TabPlayerTests PRIVATE src src/core src/import src/playback)
+    # Test executable compiles JUCE core independently of the plug-in target.
+    # Keep these feature toggles consistent so libcurl headers are not required.
+    target_compile_definitions(TabPlayerTests PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
     target_link_libraries(TabPlayerTests PRIVATE
         juce::juce_audio_basics
         juce::juce_core
