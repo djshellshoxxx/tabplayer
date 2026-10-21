@@ -54,6 +54,7 @@ target_sources(TabPlayer PRIVATE
     ${TABPLAYER_CORE}
     src/plugin/PluginProcessor.cpp
     src/plugin/PluginEditor.cpp
+    src/plugin/TabView.cpp
 )
 
 target_include_directories(TabPlayer PRIVATE
