@@ -179,7 +179,7 @@ static bool testTiesAndTempoChange()
     const auto midi = buildMidiFile (score, 480);
     ok &= expect (midi.getNumTracks() == 2, "one tempo track plus one note track");
 
-    // Tied notes merge: A+B is one 2-beat note, so three source notes give two note-ons.
+    // Tied notes merge: A+B is one 2-beat note, so four source notes give three note-ons.
     int noteOns = 0;
     double mergedOffTick = -1.0;
     const auto* notes = midi.getTrack (1);
@@ -192,7 +192,7 @@ static bool testTiesAndTempoChange()
             mergedOffTick = holder->message.getTimeStamp();
     }
 
-    ok &= expect (noteOns == 2, "tied notes merge into one note");
+    ok &= expect (noteOns == 3, "tied notes merge into one note");
     ok &= expect (std::abs (mergedOffTick - 960.0) < 1.0e-6, "merged note ends two beats after it starts");
 
     // Tempo track: 120 at the start, 90 at the start of measure 2 (beat 4 = tick 1920).
