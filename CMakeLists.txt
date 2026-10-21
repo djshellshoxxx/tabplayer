@@ -31,6 +31,8 @@ set(TABPLAYER_CORE
     src/playback/TechniqueCompiler.cpp
     src/profile/InstrumentProfile.cpp
     src/project/ProjectFile.cpp
+    src/tools/MidiExporter.cpp
+    src/tools/ScoreTransforms.cpp
 )
 
 juce_add_plugin(TabPlayer
@@ -61,6 +63,7 @@ target_include_directories(TabPlayer PRIVATE
     src/playback
     src/profile
     src/project
+    src/tools
     src/plugin
 )
 
@@ -85,7 +88,7 @@ if (TABPLAYER_BUILD_TESTS)
     foreach (test_src ${TABPLAYER_TEST_SOURCES})
         get_filename_component(test_name ${test_src} NAME_WE)
         add_executable(${test_name} ${test_src} ${TABPLAYER_CORE})
-        target_include_directories(${test_name} PRIVATE src src/core src/import src/playback src/profile src/project)
+        target_include_directories(${test_name} PRIVATE src src/core src/import src/playback src/profile src/project src/tools)
         target_link_libraries(${test_name} PRIVATE juce::juce_audio_basics juce::juce_core juce::juce_events)
         target_compile_definitions(${test_name} PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
         add_test(NAME ${test_name} COMMAND ${test_name})
