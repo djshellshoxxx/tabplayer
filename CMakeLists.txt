@@ -23,6 +23,9 @@ set(TABPLAYER_CORE
     src/import/TabSemanticAdapter.cpp
     src/import/TabTechniqueCompiler.cpp
     src/playback/TabPlaybackEngine.cpp
+    src/playback/TechniqueCompiler.cpp
+    src/profile/InstrumentProfile.cpp
+    src/project/ProjectFile.cpp
 )
 
 juce_add_plugin(TabPlayer
@@ -51,6 +54,8 @@ target_include_directories(TabPlayer PRIVATE
     src/core
     src/import
     src/playback
+    src/profile
+    src/project
     src/plugin
 )
 
@@ -70,13 +75,14 @@ target_link_libraries(TabPlayer PRIVATE
 option(TABPLAYER_BUILD_TESTS "Build TabPlayer tests" ON)
 if (TABPLAYER_BUILD_TESTS)
     enable_testing()
-    add_executable(TabPlayerTests tests/PlaybackEngineTests.cpp ${TABPLAYER_CORE})
-    target_include_directories(TabPlayerTests PRIVATE src src/core src/import src/playback)
-    target_link_libraries(TabPlayerTests PRIVATE
-        juce::juce_audio_basics
-        juce::juce_core
-        juce::juce_events
-    )
-    target_compile_definitions(TabPlayerTests PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
-    add_test(NAME TabPlayerTests COMMAND TabPlayerTests)
+    # One executable per tests/*Tests.cpp so a failing suite can be rebuilt/run alone.
+    file(GLOB TABPLAYER_TEST_SOURCES CONFIGURE_DEPENDS tests/*Tests.cpp)
+    foreach (test_src ${TABPLAYER_TEST_SOURCES})
+        get_filename_component(test_name ${test_src} NAME_WE)
+        add_executable(${test_name} ${test_src} ${TABPLAYER_CORE})
+        target_include_directories(${test_name} PRIVATE src src/core src/import src/playback src/profile src/project)
+        target_link_libraries(${test_name} PRIVATE juce::juce_audio_basics juce::juce_core juce::juce_events)
+        target_compile_definitions(${test_name} PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
+        add_test(NAME ${test_name} COMMAND ${test_name})
+    endforeach()
 endif()
