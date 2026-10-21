@@ -313,7 +313,7 @@ void TabPlaybackEngine::process (juce::MidiBuffer& midi, int numSamples, double 
         const int chunk = juce::jmin (numSamples - s, needed);
         const double chunkEnd = chunk == needed ? countInTotal : countInElapsed + (double) chunk * countRate;
 
-        for (int i = (int) std::ceil (countInElapsed - 1.0e-9); (double) i < chunkEnd - 1.0e-9 && (double) i < countInTotal; ++i)
+        for (int i = (int) std::ceil (countInElapsed); (double) i < chunkEnd && (double) i < countInTotal; ++i)
         {
             const double offset = ((double) i - countInElapsed) / countRate;
             const int sample = juce::jlimit (s, s + chunk - 1, s + (int) std::floor (juce::jmax (0.0, offset) + 1.0e-9));
@@ -377,7 +377,8 @@ void TabPlaybackEngine::process (juce::MidiBuffer& midi, int numSamples, double 
 
         if (metronome)
         {
-            for (int k = (int) std::ceil (beat - 1.0e-9); (double) k < endBeat; ++k)
+            // Half-open [beat, endBeat) with no epsilon, so a click on a chunk boundary is emitted exactly once.
+            for (int k = (int) std::ceil (beat); (double) k < endBeat; ++k)
             {
                 const int sample = sampleFor ((double) k);
                 emitClick (midi, sample, juce::jmin (numSamples - 1, sample + clickOffset), k % barBeats == 0);
