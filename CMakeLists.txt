@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(TabPlayer VERSION 0.1.0 LANGUAGES CXX)
+project(TabPlayer VERSION 0.1.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -37,6 +37,7 @@ juce_add_plugin(TabPlayer
     NEEDS_MIDI_INPUT FALSE
     NEEDS_MIDI_OUTPUT TRUE
     COPY_PLUGIN_AFTER_BUILD FALSE
+    VST3_AUTO_MANIFEST FALSE
 )
 
 target_sources(TabPlayer PRIVATE
@@ -56,6 +57,7 @@ target_include_directories(TabPlayer PRIVATE
 target_compile_definitions(TabPlayer PUBLIC
     JUCE_WEB_BROWSER=0
     JUCE_USE_CURL=0
+    JUCE_VST3_CAN_REPLACE_VST2=0
 )
 
 target_link_libraries(TabPlayer PRIVATE
@@ -75,5 +77,6 @@ if (TABPLAYER_BUILD_TESTS)
         juce::juce_core
         juce::juce_events
     )
+    target_compile_definitions(TabPlayerTests PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
     add_test(NAME TabPlayerTests COMMAND TabPlayerTests)
 endif()
