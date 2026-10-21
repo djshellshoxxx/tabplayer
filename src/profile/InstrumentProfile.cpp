@@ -112,7 +112,7 @@ bool readBool (const juce::var& obj, const char* key, bool fallback)
     if (v.isBool())
         return static_cast<bool> (v);
     if (v.isInt() || v.isInt64())
-        return static_cast<int64_t> (v) != 0;
+        return static_cast<double> (v) != 0.0;
     return fallback;
 }
 
