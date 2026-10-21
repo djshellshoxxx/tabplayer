@@ -28,3 +28,17 @@ This project uses a C++/JUCE plugin architecture. Consult the repository's build
 ## Project status and support
 
 This is development software. Report reproducible parser, timing, or MIDI routing issues using GitHub Issues, including a minimal tab example and host/platform details. Do not assume unverified formats or hosts are supported.
+
+## Build and test (from CI)
+
+`.github/workflows/ci.yml` configures, builds and runs `ctest` with CMake and Ninja. The unit-test target is `TabPlayerTests` (`tests/PlaybackEngineTests.cpp`). On Linux, JUCE's build helper needs X11 development headers (for example `X11/extensions/Xrandr.h`); a configure without them fails. This was observed on a machine without those headers.
+
+```sh
+cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake --build build --config Release
+ctest --test-dir build --output-on-failure
+```
+
+## Wiki
+
+Wiki source pages are in [docs/wiki/](docs/wiki/Home.md): developer guide, architecture summary and codebase map.
